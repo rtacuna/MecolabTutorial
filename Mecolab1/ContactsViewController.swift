@@ -28,7 +28,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
     
-    func retornan() {
+    func toBack() {
         if let loginController = self.storyboard?.instantiateViewControllerWithIdentifier("ViewController") as? ViewController {
             // only if you have a navigationController
             self.navigationController?.presentViewController(loginController, animated: true, completion: nil)
@@ -70,9 +70,13 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @IBAction func toLogin(sender: AnyObject) {
-            defaults.setObject(nil, forKey: "number")
-            defaults.synchronize()
-            retornan()
+        defaults.setObject(nil, forKey: "number")
+        defaults.synchronize()
+        self.contact = []
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
+        toBack()
     }
     
     @IBAction func refreshContacts(sender: AnyObject) {
